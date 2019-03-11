@@ -12,39 +12,26 @@ platform:
 #     - 5346a318.ngrok.io
 
 steps:
-- name: checkstyle
+- name: prtest
   image: index.docker.io/snergster/vpp-ubuntu18
   commands:
-    - git fetch --tags || true
-    - build-root/scripts/checkstyle.sh
-    - make test-checkstyle
+    - echo 'pr'
   when:
     event:
       -push
       -pull_request
-- name: vppbuildtest
+- name: prpushtest
   image: index.docker.io/snergster/vpp-ubuntu18
-  privileged: true
   commands:
-    - sudo mount -o remount /dev/shm -o size=1024M || true
-    - grep search /etc/resolv.conf || true
-    - git fetch --tags || true
-    - make UNATTENDED=yes verify
+    - echo 'pr and push'
   when:
     event:
     - pull_request
+    - push
 - name: vpppush
-  environment:
-    REPO:
-      from_secret: repo
-    token:
-      from_secret: token
   image: index.docker.io/snergster/vpp-ubuntu18
-  privileged: true
   commands:
     - echo 'push only'
-    - chmod 755 /usr/local/bin/pc_push || true
-    - /usr/local/bin/pc_push || true
   when:
     event:
     - push
