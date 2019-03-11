@@ -1,0 +1,32 @@
+---
+kind: pipeline
+name: ubuntuarm
+
+platform:
+  os: linux
+  arch: arm64
+# instance:
+#   include:
+#     - drone.fdiopoc.net
+#     - 5346a318.ngrok.io
+
+steps:
+- name: vppbuildarm
+  image: index.docker.io/snergster/ubuntu18arm
+  privileged: true
+  commands:
+  - sudo mount -o remount /dev/shm -o size=1024M || true
+  - git fetch --tags || true
+  - make UNATTENDED=yes install-dep
+  - make UNATTENDED=yes pkg-deb
+  when:
+    event:
+    - pull_request
+- name: vppbuildarm
+  image: index.docker.io/snergster/ubuntu18arm
+  privileged: true
+  commands:
+  - echo 'push only'
+  when:
+    event:
+    - push

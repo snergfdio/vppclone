@@ -1,0 +1,54 @@
+kind: pipeline
+name: ubuntu
+
+steps:
+- name: vppbuild
+  image: index.docker.io/snergster/vpp-opensuse15
+  commands:
+  - git fetch --tags || true
+  - make UNATTENDED=yes verify
+  when:
+    event:
+    - push
+    - pull_request
+- name: vppbuild
+  image: index.docker.io/snergster/vpp-opensuse15
+  commands:
+  - echo 'push test'
+  when:
+    event:
+    - push
+
+---
+kind: pipeline
+name: centos
+
+steps:
+- name: vppbuildcentos
+  image: index.docker.io/snergster/vpp-centos
+  commands:
+  - git fetch --tags || true
+  - make UNATTENDED=yes verify
+  when:
+    event:
+    - pull_request
+- name: vppbuildcentos
+  image: index.docker.io/snergster/vpp-centos
+  commands:
+  - make UNATTENDED=yes verify
+  when:
+    event:
+    - push
+---
+kind: pipeline
+name: ubuntu16
+
+steps:
+- name: vppbuildxenial
+  image: index.docker.io/snergster/vpp-ubuntu16
+  commands:
+  - git fetch --tags || true
+  - make UNATTENDED=yes verify
+  when:
+    event:
+    - push
