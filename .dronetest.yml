@@ -15,12 +15,11 @@ steps:
 - name: prtest
   image: index.docker.io/snergster/vpp-ubuntu18
   commands:
-    - echo 'pr'
+    - echo 'prtest only'
   when:
     event:
-      -push
       -pull_request
-- name: prpushtest
+- name: prandpush
   image: index.docker.io/snergster/vpp-ubuntu18
   commands:
     - echo 'pr and push'
@@ -29,6 +28,11 @@ steps:
     - pull_request
     - push
 - name: vpppush
+  environment:
+    REPO:
+      from_secret: repo
+    token:
+      from_secret: token
   image: index.docker.io/snergster/vpp-ubuntu18
   commands:
     - echo 'push only'

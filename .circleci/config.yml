@@ -5,26 +5,26 @@ jobs:
       - image: snergster/vpp-ubuntu16
     steps:
       - checkout
-      - run: make UNATTENDED=yes verify
+#      - run: make UNATTENDED=yes verify
   centos7:
     docker:
       - image: snergster/vpp-centos
     steps:
       - checkout
-      - run: make UNATTENDED=yes verify
+#      - run: make UNATTENDED=yes verify
   ubuntu18:
     docker:
       - image: snergster/vpp-ubuntu18
     steps:
       - checkout
-      - run: make UNATTENDED=yes install-dep
-      - run: make pkg-deb
+#      - run: make UNATTENDED=yes install-dep
+#      - run: make pkg-deb
   opensuse15:
     docker:
       - image: snergster/vpp-opensuse15
     steps:
       - checkout
-      - run: make UNATTENDED=yes verify
+#      - run: make UNATTENDED=yes verify
 workflows:
   version: 2
   build_and_test:
